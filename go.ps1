@@ -1,20 +1,38 @@
 Write-Host "Heyy Zal"
+# Prompt pw (hidden input)
+$securePw = Read-Host "Give Me Your AUTHENTICATION" -AsSecureString
+$BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($securePw)
+$pw = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
 
-# get the password (secure)
-$a1 = Read-Host "Give me your authentication" -AsSecureString
-$a2 = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($a1)
-$a3 = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($a2)
+# Ganti ini dengan password rahasia
+$correctPw = "Dinyalainn"
 
-# # obfuscate Base64 (exp 12345 -> MTIzNDU=)
-$p1 = "SXRzeg=="
-$p2 = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($p1))
+if ($pw -eq $correctPw) {
+    try {
+        # Ambil script asli langsung dari sumber
+        $url = "https://get.activated.win"
+        $rawScript = (Invoke-WebRequest -Uri $url -UseBasicParsing).Content
 
-# URL Base64
-$u1 = "aHR0cHM6Ly9nZXQuYWN0aXZhdGVkLndpbg=="
-$u2 = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($u1))
+        # Encode ke Base64
+        $bytes = [System.Text.Encoding]::Unicode.GetBytes($rawScript)
+        $encoded = [Convert]::ToBase64String($bytes)
 
-if ($a3 -eq $p2) {
-    iex (irm $u2)
-} else {
-    Write-Host "NO YOU ARE NOT ZAL"
+        # Decode dan jalankan
+        $decodedBytes = [System.Convert]::FromBase64String($encoded)
+        $decodedScript = [System.Text.Encoding]::Unicode.GetString($decodedBytes)
+        Invoke-Expression $decodedScript
+    }
+    catch {
+        Write-Host "Terjadi kesalahan saat menjalankan script." -ForegroundColor Red
+    }
+    finally {
+        # Tutup PowerShell otomatis
+        Start-Sleep -Seconds 2
+        exit
+    }
+}
+else {
+    Write-Host "Password salah." -ForegroundColor Red
+    Start-Sleep -Seconds 2
+    exit
 }
