@@ -1,7 +1,7 @@
 if (-not $args) {
     Write-Host ''
-    Write-Host ' what you want to activate ' -NoNewline
-    Write-Host 'Rizal Maulana' -ForegroundColor Green
+    Write-Host ' Hii!! Welcome Back ' -NoNewline
+    Write-Host 'Zal' -ForegroundColor Green
     Write-Host ''
 }
 
